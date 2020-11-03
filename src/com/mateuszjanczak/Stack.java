@@ -19,6 +19,9 @@ public class Stack implements StackOperations {
 
     @Override
     public Optional<String> pop() {
+        if(stackList.isEmpty()) {
+            return Optional.empty();
+        }
         Optional<String> lastItem = Optional.of(stackList.get(stackList.size() - 1));
         stackList.remove(stackList.size() - 1);
         return lastItem;
