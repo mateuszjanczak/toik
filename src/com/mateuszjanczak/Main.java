@@ -2,7 +2,7 @@ package com.mateuszjanczak;
 
 public class Main {
 
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) {
         Quiz quiz = new QuizImpl();
 
         int minValue = Quiz.MIN_VALUE;
@@ -11,7 +11,6 @@ public class Main {
 
         for(int counter = 1; ;counter++) {
             System.out.println(digit);
-            Thread.sleep(300);
             try {
                 quiz.isCorrectValue(digit);
                 System.out.println("Trafiona proba!!! Szukana liczba to: " + digit + " Ilosc prob: " + counter);
@@ -19,12 +18,11 @@ public class Main {
             } catch (Quiz.ParamTooLarge paramTooLarge) {
                 System.out.println("Argument za duzy!!!");
                 maxValue = digit;
-                digit = (maxValue + minValue) / 2;
             } catch (Quiz.ParamTooSmall paramTooSmall) {
                 System.out.println("Argument za maly!!!");
                 minValue = digit;
-                digit = (maxValue + minValue) / 2;
             }
+            digit = (maxValue + minValue) / 2;
         }
     }
 }
