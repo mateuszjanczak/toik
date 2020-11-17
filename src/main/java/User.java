@@ -1,13 +1,13 @@
 import java.util.List;
 
-public class Resume {
+public class User {
     private String firstName;
     private String lastName;
     private String profession;
     private List<String> education;
     private String summary;
 
-    public Resume(String firstName, String lastName, String profession, List<String> education, String summary) {
+    public User(String firstName, String lastName, String profession, List<String> education, String summary) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.profession = profession;

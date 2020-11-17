@@ -12,16 +12,15 @@ import java.io.OutputStream;
 import java.util.stream.Collectors;
 
 public class PdfPrinter {
-    private Resume resume;
+    private User user;
     private String filename;
 
-    public PdfPrinter(String filename, Resume resume) {
-        this.resume = resume;
+    public PdfPrinter(String filename, User user) {
+        this.user = user;
         this.filename = filename;
     }
 
     public void print() {
-
         try {
             OutputStream fos = new FileOutputStream(new File(filename));
             Document document = new Document();
@@ -38,25 +37,24 @@ public class PdfPrinter {
             table.getDefaultCell().setHorizontalAlignment(Element.ALIGN_JUSTIFIED);
 
             table.addCell("First name");
-            table.addCell(resume.getFirstName());
+            table.addCell(user.getFirstName());
 
             table.addCell("Last name");
-            table.addCell(resume.getLastName());
+            table.addCell(user.getLastName());
 
             table.addCell("Profession");
-            table.addCell(resume.getProfession());
+            table.addCell(user.getProfession());
 
             table.addCell("Education");
-            table.addCell(resume.getEducation().stream().map(Object::toString).collect(Collectors.joining("\n")));
+            table.addCell(user.getEducation().stream().map(Object::toString).collect(Collectors.joining("\n")));
 
             table.addCell("Summary");
-            table.addCell(resume.getSummary());
+            table.addCell(user.getSummary());
 
             document.add(paragraph);
             document.add(table);
 
             document.close();
-
         } catch (DocumentException | FileNotFoundException e) {
             e.printStackTrace();
         }
