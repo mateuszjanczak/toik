@@ -1,61 +1,62 @@
 package com.demo.springboot.rest;
 
-import com.demo.springboot.dto.CreateMovieDto;
-import com.demo.springboot.dto.MovieDto;
-import com.demo.springboot.dto.MovieListDto;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.demo.springboot.dto.MovieRequest;
+import com.demo.springboot.exception.EmptyDtoException;
+import com.demo.springboot.exception.MovieNotFoundException;
+import com.demo.springboot.model.Movie;
+import com.demo.springboot.service.MovieService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 public class MovieApiController {
-    private static final Logger LOG = LoggerFactory.getLogger(MovieApiController.class);
 
-    private final MovieListDto movies;
+    private final MovieService movieService;
 
-    public MovieApiController() {
-        List<MovieDto> moviesList = new ArrayList<>();
-        moviesList.add(new MovieDto(1,
-                "Piraci z Krzemowej Doliny",
-                1999,
-                "https://fwcdn.pl/fpo/30/02/33002/6988507.6.jpg")
-        );
-        movies = new MovieListDto(moviesList);
+    public MovieApiController(MovieService movieService) {
+        this.movieService = movieService;
     }
 
     @GetMapping("/movies")
-    public ResponseEntity<MovieListDto> getMovies() {
-        LOG.info("--- get all movies: {}", movies);
-        return ResponseEntity.ok().body(movies);    // = new ResponseEntity<>(movies, HttpStatus.OK);
-    }
-
-    @GetMapping("/movies/{id}/title/{title}")
-    public ResponseEntity<Void> getMovie(@PathVariable("id") Integer id, @PathVariable("title") String title) {
-        LOG.info("--- id: {}", id);
-        LOG.info("--- title: {}", title);
-
-        return ResponseEntity.ok().build();
-    }
-
-    @PutMapping("/movies")
-    public ResponseEntity<Void> updateMovie(@RequestParam("id") Integer id, @RequestParam("title") String title) {
-        LOG.info("--- id: {}", id);
-        LOG.info("--- title: {}", title);
-
-        return ResponseEntity.ok().build();
+    public ResponseEntity<List<Movie>> getMovies() {
+        final List<Movie> movies = movieService.findAll();
+        return new ResponseEntity<>(movies, HttpStatus.OK);
     }
 
     @PostMapping("/movies")
-    public ResponseEntity<Void> createMovie(@RequestBody CreateMovieDto createMovieDto) throws URISyntaxException {
-        LOG.info("--- id: {}", createMovieDto.getMovieId());
-        LOG.info("--- title: {}", createMovieDto.getTitle());
+    public ResponseEntity<Void> createMovie(@RequestBody MovieRequest movieRequest) throws URISyntaxException {
+        Movie movie;
+        try {
+            movie = movieService.create(movieRequest);
+        } catch (EmptyDtoException e) {
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.created(new URI("/movies/" + movie.getMovieId())).build();
+    }
 
-        return ResponseEntity.created(new URI("/movies/" + createMovieDto.getMovieId())).build();
+    @PutMapping("/movies/{id}")
+    public ResponseEntity<Void> editMovie(@RequestBody MovieRequest movieRequest, @PathVariable int id) throws URISyntaxException {
+        Movie movie;
+        try {
+            movie = movieService.update(movieRequest, id);
+        } catch (MovieNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.created(new URI("/movies/" + movie.getMovieId())).build();
+    }
+
+    @DeleteMapping(value = "/movies/{id}")
+    public ResponseEntity<Void> deleteMovie(@PathVariable int id){
+        try {
+            movieService.delete(id);
+        } catch (MovieNotFoundException e) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
