@@ -14,6 +14,16 @@ public class User {
         this.incorrectLoginCounter = incorrectLoginCounter;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", active=" + active +
+                ", incorrectLoginCounter=" + incorrectLoginCounter +
+                '}';
+    }
+
     public String getLogin() {
         return login;
     }
@@ -28,5 +38,21 @@ public class User {
 
     public int getIncorrectLoginCounter() {
         return incorrectLoginCounter;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public void setIncorrectLoginCounter(int incorrectLoginCounter) {
+        this.incorrectLoginCounter = incorrectLoginCounter;
     }
 }
