@@ -17,9 +17,28 @@ public class UserRepository {
         usersDatabase.put(3, new User("silver", "$silver$", true, 0));
     }
 
-    public boolean checkLogin(final String login, final String password) {
-        // TODO: Prosze dokonczyc implementacje...
+    public Type checkLogin(final String login, final String password) {
 
-        return false;
+         for(Map.Entry<Integer, User> entry: usersDatabase.entrySet()) {
+
+             int key = entry.getKey();
+            User user = entry.getValue();
+
+            if(user.getLogin().equals(login)) {
+                if(user.getIncorrectLoginCounter() >= 3) return Type.IncorrectLoginCounter;
+
+                if(user.getPassword().equals(password)) {
+                    user.setIncorrectLoginCounter(0);
+                    usersDatabase.replace(key, user);
+                    return Type.SuccessfulLogin;
+                } else {
+                    user.setIncorrectLoginCounter(user.getIncorrectLoginCounter() + 1);
+                    usersDatabase.replace(key, user);
+                    return Type.FailureLogin;
+                }
+            }
+         }
+
+        return Type.FailureLogin;
     }
 }
