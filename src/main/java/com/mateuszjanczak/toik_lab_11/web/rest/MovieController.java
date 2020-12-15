@@ -23,7 +23,7 @@ public class MovieController {
 
     @CrossOrigin
     @GetMapping("/movies")
-    public ResponseEntity<Map<String, List<MovieDto>>> getAllNotes(){
+    public ResponseEntity<Map<String, List<MovieDto>>> getAllMovies(){
         return new ResponseEntity<>(movieService.getMovieList(), HttpStatus.OK);
     }
 }
