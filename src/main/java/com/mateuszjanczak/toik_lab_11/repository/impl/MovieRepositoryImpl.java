@@ -1,37 +1,24 @@
 package com.mateuszjanczak.toik_lab_11.repository.impl;
 
+import com.mateuszjanczak.toik_lab_11.model.Movie;
 import com.mateuszjanczak.toik_lab_11.repository.MovieRepository;
 import org.springframework.stereotype.Repository;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 @Repository
 public class MovieRepositoryImpl implements MovieRepository {
-    private final List<String> movieList;
+    private final List<Movie> movieList;
 
     public MovieRepositoryImpl() {
         movieList = new ArrayList<>();
-        this.readCsvFile();
+        movieList.add(Movie.builder().movieId(1).title("Piraci z krzemowej doliny").image("https://fwcdn.pl/fpo/30/02/33002/6988507.3.jpg").year(1999).build());
+        movieList.add(Movie.builder().movieId(2).title("Piraci z czerwonej doliny").image("https://fwcdn.pl/fpo/30/02/33002/6988507.3.jpg").year(2010).build());
+        movieList.add(Movie.builder().movieId(3).title("Piraci z niebieskiej doliny").image("https://fwcdn.pl/fpo/30/02/33002/6988507.3.jpg").year(2020).build());
     }
 
-    private void readCsvFile() {
-        try {
-            BufferedReader reader = new BufferedReader(new FileReader(PATH));
-            String line;
-            reader.readLine();
-            while((line = reader.readLine()) != null) {
-                movieList.add(line);
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public List<String> getMovieList() {
+    public List<Movie> getMovieList() {
         return movieList;
     }
 }

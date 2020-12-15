@@ -20,11 +20,11 @@ public class MovieServiceImpl implements MovieService {
     @Override
     public List<MovieDto> getMovieList() {
         return movieRepository.getMovieList().stream()
-                .map(line -> MovieDto.builder()
-                        .movieId(Integer.parseInt(line.split(";")[0]))
-                        .title(line.split(";")[1])
-                        .year(Integer.parseInt(line.split(";")[2]))
-                        .image(line.split(";")[3])
+                .map(movie -> MovieDto.builder()
+                        .movieId(movie.getMovieId())
+                        .title(movie.getTitle())
+                        .year(movie.getYear())
+                        .image(movie.getImage())
                         .build())
                 .collect(Collectors.toList());
     }
