@@ -24,9 +24,6 @@ public class MovieController {
     @CrossOrigin
     @GetMapping("/movies")
     public ResponseEntity<Map<String, List<MovieDto>>> getAllNotes(){
-        final List<MovieDto> movieDtoList = movieService.getMovieList();
-        Map<String, List<MovieDto>> mapMovies = new HashMap<>();
-        mapMovies.put("movies", movieDtoList);
-        return new ResponseEntity<>(mapMovies, HttpStatus.OK);
+        return new ResponseEntity<>(movieService.getMovieList(), HttpStatus.OK);
     }
 }
