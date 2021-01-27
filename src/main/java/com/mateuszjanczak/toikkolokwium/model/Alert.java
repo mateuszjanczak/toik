@@ -1,22 +1,18 @@
 package com.mateuszjanczak.toikkolokwium.model;
 
-import java.util.List;
-
 public class Alert {
-    List<String> alert;
 
-    public Alert() {
-    }
+    String alert;
 
-    public Alert(List<String> alert) {
+    public Alert(String alert) {
         this.alert = alert;
     }
 
-    public List<String> getAlert() {
+    public String getAlert() {
         return alert;
     }
 
-    public void setAlert(List<String> alert) {
+    public void setAlert(String alert) {
         this.alert = alert;
     }
 }

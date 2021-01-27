@@ -15,11 +15,11 @@ public class QuadraticServiceImpl implements QuadraticService {
             return new Result();
         } else if (delta == 0) {
             double x0 = (-b+sqrtDelta)/(2*a);
-            return new Result(String.valueOf(x0));
+            return new Result(x0);
         } else {
             double x1 = (-b-sqrtDelta)/(2*a);
             double x2 = (-b+sqrtDelta)/(2*a);
-            return new Result(String.valueOf(x1), String.valueOf(x2));
+            return new Result(x1, x2);
         }
     }
 }
